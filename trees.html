@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Trees</title>
+		<link rel="stylesheet" href="main.css" />
+	</head>
+	<body>
+		<div class="container">
+			<img src="bg.jpg" alt="">
+			<div class="lists">
+				<h1>List of programs</h1>
+
+				<div class="list">
+					<p>BINARY TREE (PREORDER & INORDER TRAVERSAL)</p>
+
+					<pre style="display: none">
+                        
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct TreeNode {
+    char data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+int search(char inorder[], int start, int end, char value) {
+    for (int i = start; i <= end; i++) {
+        if (inorder[i] == value) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+struct TreeNode* buildTree(char preorder[], char inorder[], int inStart, int inEnd) {
+    static int preIndex = 0;
+
+    if (inStart > inEnd) {
+        return NULL;
+    }
+
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    newNode->data = preorder[preIndex++];
+    newNode->left = newNode->right = NULL;
+
+    if (inStart != inEnd) {
+        int inIndex = search(inorder, inStart, inEnd, newNode->data);
+        newNode->left = buildTree(preorder, inorder, inStart, inIndex - 1);
+        newNode->right = buildTree(preorder, inorder, inIndex + 1, inEnd);
+    }
+
+    return newNode;
+}
+
+void inorderTraversal(struct TreeNode* root) {
+    if (root != NULL) {
+        inorderTraversal(root->left);
+        printf("%c ", root->data);
+        inorderTraversal(root->right);
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
+
+    char preorder[n], inorder[n];
+
+    printf("Enter the preorder traversal: ");
+    for (int i = 0; i < n; i++) {
+        scanf(" %c", &preorder[i]);
+    }
+
+    printf("Enter the inorder traversal: ");
+    for (int i = 0; i < n; i++) {
+        scanf(" %c", &inorder[i]);
+    }
+
+    struct TreeNode* root = buildTree(preorder, inorder, 0, n - 1);
+
+    printf("Inorder traversal of the constructed tree: ");
+    inorderTraversal(root);
+    printf("\n");
+
+    return 0;
+}
+	
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>BINARY TREE LEVEL ORDER TRAVERSAL</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct TreeNode {
+    char data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+// Structure to represent a queue node
+struct QueueNode {
+    struct TreeNode* treeNode;
+    struct QueueNode* next;
+};
+
+// Structure to represent a queue
+struct Queue {
+    struct QueueNode *front, *rear;
+};
+
+// Function to create a new tree node
+struct TreeNode* createNode(char value) {
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    newNode->data = value;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Function to create a new queue node
+struct QueueNode* createQueueNode(struct TreeNode* treeNode) {
+    struct QueueNode* newNode = (struct QueueNode*)malloc(sizeof(struct QueueNode));
+    newNode->treeNode = treeNode;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to create an empty queue
+struct Queue* createQueue() {
+    struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+    queue->front = queue->rear = NULL;
+    return queue;
+}
+
+// Function to enqueue a tree node to the queue
+void enqueue(struct Queue* queue, struct TreeNode* treeNode) {
+    struct QueueNode* newNode = createQueueNode(treeNode);
+    if (queue->rear == NULL) {
+        queue->front = queue->rear = newNode;
+        return;
+    }
+    queue->rear->next = newNode;
+    queue->rear = newNode;
+}
+
+// Function to dequeue a tree node from the queue
+struct TreeNode* dequeue(struct Queue* queue) {
+    if (queue->front == NULL) {
+        return NULL;
+    }
+    struct QueueNode* temp = queue->front;
+    queue->front = queue->front->next;
+    if (queue->front == NULL) {
+        queue->rear = NULL;
+    }
+    struct TreeNode* treeNode = temp->treeNode;
+    free(temp);
+    return treeNode;
+}
+
+// Function to perform level order traversal of a binary tree
+void levelOrderTraversal(struct TreeNode* root) {
+    if (root == NULL) {
+        return;
+    }
+
+    struct Queue* queue = createQueue();
+    enqueue(queue, root);
+
+    while (queue->front != NULL) {
+        struct TreeNode* current = dequeue(queue);
+        printf("%c ", current->data);
+
+        if (current->left != NULL) {
+            enqueue(queue, current->left);
+        }
+
+        if (current->right != NULL) {
+            enqueue(queue, current->right);
+        }
+    }
+}
+
+int main() {
+    // Constructing a sample binary tree
+    struct TreeNode* root = createNode('A');
+    root->left = createNode('B');
+    root->right = createNode('C');
+    root->left->left = createNode('D');
+    root->left->right = createNode('E');
+    root->right->left = createNode('F');
+    root->right->right = createNode('G');
+
+    printf("Level order traversal of the binary tree: ");
+    levelOrderTraversal(root);
+    printf("\n");
+
+    return 0;
+}
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>PRINT LEFT VIEW OF BINARY TREE</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct TreeNode {
+    char data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+struct TreeNode* createNode(char value) {
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    newNode->data = value;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+void leftViewUtil(struct TreeNode* root, int level, int* maxLevel) {
+    if (root == NULL) {
+        return;
+    }
+
+    if (level > *maxLevel) {
+        printf("%c ", root->data);
+        *maxLevel = level;
+    }
+
+    leftViewUtil(root->left, level + 1, maxLevel);
+    leftViewUtil(root->right, level + 1, maxLevel);
+}
+
+void leftView(struct TreeNode* root) {
+    int maxLevel = 0;
+    leftViewUtil(root, 1, &maxLevel);
+}
+
+int main() {
+    struct TreeNode* root = createNode('A');
+    root->left = createNode('B');
+    root->right = createNode('C');
+    root->left->left = createNode('D');
+    root->left->right = createNode('E');
+    root->right->right = createNode('F');
+    root->left->right->left = createNode('G');
+    root->left->right->right = createNode('H');
+
+    printf("Left view of the binary tree: ");
+    leftView(root);
+    printf("\n");
+
+    return 0;
+}
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>PRINT RIGHT VIEW OF BINARY TREE</p>
+
+					<pre style="display: none">
+
+
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct TreeNode {
+    char data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+struct TreeNode* createNode(char value) {
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    newNode->data = value;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+void rightViewUtil(struct TreeNode* root, int level, int* maxLevel) {
+    if (root == NULL) {
+        return;
+    }
+
+    if (level > *maxLevel) {
+        printf("%c ", root->data);
+        *maxLevel = level;
+    }
+
+    rightViewUtil(root->right, level + 1, maxLevel);
+    rightViewUtil(root->left, level + 1, maxLevel);
+}
+
+void rightView(struct TreeNode* root) {
+    int maxLevel = 0;
+    rightViewUtil(root, 1, &maxLevel);
+}
+
+int main() {
+    struct TreeNode* root = createNode('A');
+    root->left = createNode('B');
+    root->right = createNode('C');
+    root->left->left = createNode('D');
+    root->left->right = createNode('E');
+    root->right->right = createNode('F');
+    root->left->right->left = createNode('G');
+    root->left->right->right = createNode('H');
+
+    printf("Right view of the binary tree: ");
+    rightView(root);
+    printf("\n");
+
+    return 0;
+}
+                    </pre
+					>
+				</div><div class="list">
+					<p>BINARY TREE (POSTORDER & INORDER TRAVERSAL)</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct TreeNode {
+    char data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+int search(char inorder[], int start, int end, char value) {
+    for (int i = start; i <= end; i++) {
+        if (inorder[i] == value) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+struct TreeNode* createNode(char value) {
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    newNode->data = value;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+struct TreeNode* buildTree(char postorder[], char inorder[], int inStart, int inEnd, int* postIndex) {
+    if (inStart > inEnd) {
+        return NULL;
+    }
+
+    struct TreeNode* newNode = createNode(postorder[*postIndex]);
+    (*postIndex)--;
+
+    if (inStart != inEnd) {
+        int inIndex = search(inorder, inStart, inEnd, newNode->data);
+
+        newNode->right = buildTree(postorder, inorder, inIndex + 1, inEnd, postIndex);
+
+        newNode->left = buildTree(postorder, inorder, inStart, inIndex - 1, postIndex);
+    }
+
+    return newNode;
+}
+
+void inorderTraversal(struct TreeNode* root) {
+    if (root != NULL) {
+        inorderTraversal(root->left);
+        printf("%c ", root->data);
+        inorderTraversal(root->right);
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
+
+    char postorder[n], inorder[n];
+
+    printf("Enter the postorder traversal: ");
+    for (int i = 0; i < n; i++) {
+        scanf(" %c", &postorder[i]);
+    }
+
+    printf("Enter the inorder traversal: ");
+    for (int i = 0; i < n; i++) {
+        scanf(" %c", &inorder[i]);
+    }
+
+    int postIndex = n - 1;
+    struct TreeNode* root = buildTree(postorder, inorder, 0, n - 1, &postIndex);
+
+    printf("Inorder traversal of the constructed tree: ");
+    inorderTraversal(root);
+    printf("\n");
+
+    return 0;
+}
+                    </pre
+					>
+				</div><div class="list">
+					<p>FINDING MAX DEPTH OF BINARY TREE</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct TreeNode {
+    char data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+struct TreeNode* createNode(char value) {
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    newNode->data = value;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+int maxDepth(struct TreeNode* root) {
+    if (root == NULL) {
+        return 0;
+    }
+
+    int leftDepth = maxDepth(root->left);
+    int rightDepth = maxDepth(root->right);
+
+    return max(leftDepth, rightDepth) + 1;
+}
+
+int main() {
+    struct TreeNode* root = createNode('A');
+    root->left = createNode('B');
+    root->right = createNode('C');
+    root->left->left = createNode('D');
+    root->left->right = createNode('E');
+    root->right->right = createNode('F');
+    root->left->right->left = createNode('G');
+    root->left->right->right = createNode('H');
+
+    int depth = maxDepth(root);
+    printf("Maximum depth of the binary tree: %d\n", depth);
+
+    return 0;
+}
+                    </pre
+					>
+				</div>
+			</div>
+		</div>
+
+		<div class="codeContainer">
+			<h1>The code will be shown here</h1>
+			<h3>Click any of the list to see the code!</h3>
+		</div>
+		</div>
+
+		<script>
+			const container = document.querySelector(".codeContainer");
+			const [...lists] = document.querySelectorAll(".list");
+
+			lists.forEach((list) => {
+				list.addEventListener("click", () => {
+					const heading = list.querySelector("p").innerHTML;
+					const code = list.querySelector("pre").innerText;
+					render(heading, code);
+				});
+			});
+
+			function render(heading, code) {
+				container.innerHTML = `
+                	<h1 class="codeHeading">${heading}</h1>
+			<p>
+				${code}
+			</p>
+                `;
+			}
+		</script>
+	</body>
+</html>

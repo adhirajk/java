@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Linked List
+		</title>
+		<link rel="stylesheet" href="main.css" />
+	</head>
+	<body>
+		<div class="container">
+			<img src="bg.jpg" alt="">
+			<div class="lists">
+				<h1>List of programs</h1>
+
+				<div class="list">
+					<p>SINGLE LINKED LIST (INTEGERS)</p>
+<pre style="display: none">
+	
+//IMPLEMENTING THE OPERATIONS OF SINGLE LINKED LIST 
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+int is_empty()
+{
+    return head == NULL;
+}
+
+void display()
+{
+    struct Node *current = head;
+    while (current != NULL)
+    {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+void insert_at_beginning(int data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = head;
+    head = new_node;
+}
+
+void insert_at_end(int data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = NULL;
+
+    if (head == NULL)
+    {
+        head = new_node;
+        return;
+    }
+
+    struct Node *current = head;
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+    current->next = new_node;
+}
+
+void insert_at_position(int data, int position)
+{
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+
+    if (position == 0)
+    {
+        new_node->next = head;
+        head = new_node;
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current != NULL && count < position - 1)
+    {
+        current = current->next;
+        count++;
+    }
+
+    if (current == NULL)
+    {
+        printf("Position out of range\n");
+        return;
+    }
+
+    new_node->next = current->next;
+    current->next = new_node;
+}
+
+void delete_at_beginning()
+{
+    if (head == NULL)
+    {
+        printf("List is empty, nothing to delete\n");
+        return;
+    }
+
+    struct Node *temp = head;
+    head = head->next;
+    free(temp);
+}
+
+void delete_at_end()
+{
+    if (head == NULL)
+    {
+        printf("List is empty, nothing to delete\n");
+        return;
+    }
+
+    if (head->next == NULL)
+    {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node *current = head;
+    while (current->next->next != NULL)
+    {
+        current = current->next;
+    }
+
+    free(current->next);
+    current->next = NULL;
+}
+
+void delete_at_position(int position)
+{
+    if (head == NULL)
+    {
+        printf("List is empty, nothing to delete\n");
+        return;
+    }
+
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        struct Node *temp = head;
+        head = head->next;
+        free(temp);
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current != NULL && count < position - 1)
+    {
+        current = current->next;
+        count++;
+    }
+
+    if (current == NULL || current->next == NULL)
+    {
+        printf("Position out of range\n");
+        return;
+    }
+
+    struct Node *temp = current->next;
+    current->next = temp->next;
+    free(temp);
+}
+
+int search(int data)
+{
+    struct Node *current = head;
+    int position = 0;
+    while (current != NULL)
+    {
+        if (current->data == data)
+        {
+            return position;
+        }
+        current = current->next;
+        position++;
+    }
+    return -1;
+}
+
+int main()
+{
+    insert_at_end(1);
+    insert_at_end(2);
+    insert_at_end(3);
+    insert_at_end(4);
+
+    printf("Linked list: ");
+    display();
+
+    delete_at_position(2);
+
+    printf("After deleting at position 2: ");
+    display();
+
+    int search_value = 2;
+    int position = search(search_value);
+
+    if (position != -1)
+    {
+        printf("%d found at position %d\n", search_value, position);
+    }
+    else
+    {
+        printf("%d not found in the list\n", search_value);
+    }
+
+    return 0;
+} 
+
+OUTPUT:-
+
+Linked list: 1 -> 2 -> 3 -> 4 -> NULL
+After deleting at position 2: 1 -> 2 -> 4 -> NULL
+2 found at position 1
+
+</pre>
+				</div>
+				<div class="list">
+					<p> SINGLE CIRCULAR LINKED LIST (INTEGERS)</p>
+
+					<pre style="display: none">
+
+                        
+
+//IMPLEMENTING OPERATIONS ON SINGLE CIRCULAR LINKED LIST
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+int is_empty()
+{
+    return head == NULL;
+}
+
+void display()
+{
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty.\n");
+        return;
+    }
+    struct Node *current = head;
+    do
+    {
+        printf("%d -> ", current->data);
+        current = current->next;
+    } while (current != head);
+    printf(" (head)\n");
+}
+
+void insert_at_beginning(int data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = new_node;
+
+    if (head == NULL)
+    {
+        head = new_node;
+    }
+    else
+    {
+        struct Node *current = head;
+        while (current->next != head)
+        {
+            current = current->next;
+        }
+        current->next = new_node;
+        new_node->next = head;
+        head = new_node;
+    }
+}
+
+void insert_at_end(int data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = new_node; 
+
+    if (head == NULL)
+    {
+        head = new_node;
+    }
+    else
+    {
+        struct Node *current = head;
+        while (current->next != head)
+        {
+            current = current->next;
+        }
+        current->next = new_node;
+        new_node->next = head;
+    }
+}
+
+void insert_at_position(int data, int position)
+{
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        insert_at_beginning(data);
+        return;
+    }
+
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty.\n");
+        free(new_node);
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current->next != head && count < position - 1)
+    {
+        current = current->next;
+        count++;
+    }
+
+    new_node->next = current->next;
+    current->next = new_node;
+}
+
+void delete_at_beginning()
+{
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    if (head->next == head)
+    {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node *current = head;
+    while (current->next != head)
+    {
+        current = current->next;
+    }
+
+    struct Node *temp = head;
+    head = head->next;
+    current->next = head;
+    free(temp);
+}
+
+void delete_at_end()
+{
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    if (head->next == head)
+    {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node *current = head;
+    struct Node *previous = NULL;
+    while (current->next != head)
+    {
+        previous = current;
+        current = current->next;
+    }
+
+    previous->next = head;
+    free(current);
+}
+
+void delete_at_position(int position)
+{
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        delete_at_beginning();
+        return;
+    }
+
+    struct Node *current = head;
+    struct Node *previous = NULL;
+    int count = 0;
+    while (current->next != head && count < position)
+    {
+        previous = current;
+        current = current->next;
+        count++;
+    }
+
+    if (current == head)
+    {
+        printf("Position out of range\n");
+        return;
+    }
+
+    previous->next = current->next;
+    free(current);
+}
+
+int search(int data)
+{
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty\n");
+        return -1; 
+    }
+
+    struct Node *current = head;
+    int position = 0;
+    do
+    {
+        if (current->data == data)
+        {
+            return position;
+        }
+        current = current->next;
+        position++;
+    } while (current != head);
+
+    return -1; 
+}
+
+int main()
+{
+    insert_at_end(1);
+    insert_at_end(2);
+    insert_at_end(3);
+    insert_at_end(4);
+
+    printf("Circular Linked List: ");
+    display();
+
+    delete_at_position(2);
+
+    printf("After deleting at position 2: ");
+    display();
+
+    int search_value = 2;
+    int position = search(search_value);
+
+    if (position != -1)
+    {
+        printf("%d found at position %d\n", search_value, position);
+    }
+    else
+    {
+        printf("%d not found in the list\n", search_value);
+    }
+
+    return 0;
+}
+
+
+
+OUTPUT:-
+
+Circular Linked List: 1 -> 2 -> 3 -> 4 ->  (head)
+After deleting at position 2: 1 -> 2 -> 4 ->  (head)
+2 found at position 1
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>DOUBLY LINKED LIST (INTEGERS)</p>
+
+					<pre style="display: none">
+					
+//IMPLEMENTING DOUBLY LINKED LIST
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct Node
+{
+    int data;
+    struct Node *prev;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+int is_empty()
+{
+    return head == NULL;
+}
+
+void display_forward()
+{
+    struct Node *current = head;
+    while (current != NULL)
+    {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+void display_backward()
+{
+    struct Node *current = head;
+    if (current == NULL)
+    {
+        printf("Doubly linked list is empty.\n");
+        return;
+    }
+
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+
+    while (current != NULL)
+    {
+        printf("%d -> ", current->data);
+        current = current->prev;
+    }
+    printf("NULL\n");
+}
+
+void insert_at_beginning(int data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->prev = NULL;
+    new_node->next = head;
+
+    if (head != NULL)
+    {
+        head->prev = new_node;
+    }
+
+    head = new_node;
+}
+
+void insert_at_end(int data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = NULL;
+
+    if (head == NULL)
+    {
+        new_node->prev = NULL;
+        head = new_node;
+        return;
+    }
+
+    struct Node *current = head;
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+
+    new_node->prev = current;
+    current->next = new_node;
+}
+
+void insert_at_position(int data, int position)
+{
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        insert_at_beginning(data);
+        return;
+    }
+
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+
+    if (head == NULL)
+    {
+        printf("Doubly linked list is empty.\n");
+        free(new_node);
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current->next != NULL && count < position - 1)
+    {
+        current = current->next;
+        count++;
+    }
+
+    new_node->prev = current;
+    new_node->next = current->next;
+
+    if (current->next != NULL)
+    {
+        current->next->prev = new_node;
+    }
+
+    current->next = new_node;
+}
+
+void delete_at_beginning()
+{
+    if (head == NULL)
+    {
+        printf("Doubly linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    struct Node *temp = head;
+    head = head->next;
+
+    if (head != NULL)
+    {
+        head->prev = NULL;
+    }
+
+    free(temp);
+}
+
+void delete_at_end()
+{
+    if (head == NULL)
+    {
+        printf("Doubly linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    if (head->next == NULL)
+    {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node *current = head;
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+
+    current->prev->next = NULL;
+    free(current);
+}
+
+void delete_at_position(int position)
+{
+    if (head == NULL)
+    {
+        printf("Doubly linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        delete_at_beginning();
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current != NULL && count < position)
+    {
+        current = current->next;
+        count++;
+    }
+
+    if (current == NULL)
+    {
+        printf("Position out of range\n");
+        return;
+    }
+
+    if (current->prev != NULL)
+    {
+        current->prev->next = current->next;
+    }
+    if (current->next != NULL)
+    {
+        current->next->prev = current->prev;
+    }
+
+    free(current);
+}
+
+int search(int data)
+{
+    struct Node *current = head;
+    int position = 0;
+    while (current != NULL)
+    {
+        if (current->data == data)
+        {
+            return position;
+        }
+        current = current->next;
+        position++;
+    }
+    return -1; 
+}
+
+int main()
+{
+    insert_at_end(1);
+    insert_at_end(2);
+    insert_at_end(3);
+    insert_at_end(4);
+
+    printf("Doubly Linked List (Forward): ");
+    display_forward();
+
+    printf("Doubly Linked List (Backward): ");
+    display_backward();
+
+    delete_at_position(2);
+
+    printf("After deleting at position 2: ");
+    display_forward();
+
+    int search_value = 2;
+    int position = search(search_value);
+
+    if (position != -1)
+    {
+        printf("%d found at position %d\n", search_value, position);
+    }
+    else
+    {
+        printf("%d not found in the list\n", search_value);
+    }
+
+    return 0;
+}
+
+OUTPUT:-
+
+Doubly Linked List (Forward): 1 -> 2 -> 3 -> 4 -> NULL
+Doubly Linked List (Backward): 4 -> 3 -> 2 -> 1 -> NULL
+After deleting at position 2: 1 -> 2 -> 4 -> NULL
+2 found at position 1
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>DOUBLY CIRCULAR LINKED LIST (INTEGERS)</p>
+
+					<pre style="display: none">
+
+//IMPLEMENTING DOUBLY CIRCULAR LINKED LIST
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct Node
+{
+    int data;
+    struct Node *prev;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+int is_empty()
+{
+    return head == NULL;
+}
+
+void display()
+{
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty.\n");
+        return;
+    }
+
+    struct Node *current = head;
+    do
+    {
+        printf("%d -> ", current->data);
+        current = current->next;
+    } while (current != head);
+    printf(" (head)\n");
+}
+
+void insert_at_beginning(int data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+
+    if (head == NULL)
+    {
+        new_node->prev = new_node;
+        new_node->next = new_node;
+        head = new_node;
+    }
+    else
+    {
+        struct Node *last = head->prev;
+        new_node->prev = last;
+        new_node->next = head;
+        head->prev = new_node;
+        last->next = new_node;
+        head = new_node;
+    }
+}
+
+void insert_at_end(int data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+
+    if (head == NULL)
+    {
+        new_node->prev = new_node;
+        new_node->next = new_node;
+        head = new_node;
+    }
+    else
+    {
+        struct Node *last = head->prev;
+        new_node->prev = last;
+        new_node->next = head;
+        head->prev = new_node;
+        last->next = new_node;
+    }
+}
+
+void insert_at_position(int data, int position)
+{
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        insert_at_beginning(data);
+        return;
+    }
+
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty.\n");
+        free(new_node);
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current->next != head && count < position - 1)
+    {
+        current = current->next;
+        count++;
+    }
+
+    new_node->prev = current;
+    new_node->next = current->next;
+    current->next->prev = new_node;
+    current->next = new_node;
+}
+
+void delete_at_beginning()
+{
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    struct Node *last = head->prev;
+    if (head == last)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        head = head->next;
+        last->next = head;
+        head->prev = last;
+        free(last->next);
+    }
+}
+
+void delete_at_end()
+{
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    struct Node *last = head->prev;
+    if (head == last)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        last->prev->next = head;
+        head->prev = last->prev;
+        free(last);
+    }
+}
+
+void delete_at_position(int position)
+{
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        delete_at_beginning();
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current->next != head && count < position)
+    {
+        current = current->next;
+        count++;
+    }
+
+    if (current->next == head)
+    {
+        printf("Position out of range\n");
+        return;
+    }
+
+    current->prev->next = current->next;
+    current->next->prev = current->prev;
+    free(current);
+}
+
+int search(int data)
+{
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty\n");
+        return -1; 
+    }
+
+    struct Node *current = head;
+    int position = 0;
+    do
+    {
+        if (current->data == data)
+        {
+            return position;
+        }
+        current = current->next;
+        position++;
+    } while (current != head);
+
+    return -1; 
+}
+
+int main()
+{
+    insert_at_end(1);
+    insert_at_end(2);
+    insert_at_end(3);
+    insert_at_end(4);
+
+    printf("Doubly Circular Linked List: ");
+    display();
+
+    delete_at_position(2);
+
+    printf("After deleting at position 2: ");
+    display();
+
+    int search_value = 2;
+    int position = search(search_value);
+
+    if (position != -1)
+    {
+        printf("%d found at position %d\n", search_value, position);
+    }
+    else
+    {
+        printf("%d not found in the list\n", search_value);
+    }
+
+    return 0;
+}
+
+
+
+OUTPUT:-
+
+Doubly Circular Linked List: 1 -> 2 -> 3 -> 4 ->  (head)
+After deleting at position 2: 1 -> 2 -> 4 ->  (head)
+2 found at position 1
+
+                    </pre
+					>
+				</div><div class="list">
+					<p>SINGLE LINKED LIST (STRINGS)</p>
+
+					<pre style="display: none">
+
+//SINGLE LINKED LIST FOR STORING STRINGS
+
+#include < stdio.h >
+#include < stdlib.h >
+#include < string.h >
+
+struct Node
+{
+    char data[50]; 
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+int is_empty()
+{
+    return head == NULL;
+}
+
+void display()
+{
+    struct Node *current = head;
+    while (current != NULL)
+    {
+        printf("%s -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+void insert_at_beginning(char data[])
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+    new_node->next = head;
+    head = new_node;
+}
+
+void insert_at_end(char data[])
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+    new_node->next = NULL;
+
+    if (head == NULL)
+    {
+        head = new_node;
+        return;
+    }
+
+    struct Node *current = head;
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+    current->next = new_node;
+}
+
+void insert_at_position(char data[], int position)
+{
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        insert_at_beginning(data);
+        return;
+    }
+
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+
+    if (head == NULL)
+    {
+        printf("List is empty.\n");
+        free(new_node);
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current != NULL && count < position - 1)
+    {
+        current = current->next;
+        count++;
+    }
+
+    if (current == NULL)
+    {
+        printf("Position out of range\n");
+        return;
+    }
+
+    new_node->next = current->next;
+    current->next = new_node;
+}
+
+void delete_at_beginning()
+{
+    if (head == NULL)
+    {
+        printf("List is empty, nothing to delete\n");
+        return;
+    }
+
+    struct Node *temp = head;
+    head = head->next;
+    free(temp);
+}
+
+void delete_at_end()
+{
+    if (head == NULL)
+    {
+        printf("List is empty, nothing to delete\n");
+        return;
+    }
+
+    if (head->next == NULL)
+    {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node *current = head;
+    while (current->next->next != NULL)
+    {
+        current = current->next;
+    }
+
+    free(current->next);
+    current->next = NULL;
+}
+
+void delete_at_position(int position)
+{
+    if (head == NULL)
+    {
+        printf("List is empty, nothing to delete\n");
+        return;
+    }
+
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        delete_at_beginning();
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current != NULL && count < position - 1)
+    {
+        current = current->next;
+        count++;
+    }
+
+    if (current == NULL || current->next == NULL)
+    {
+        printf("Position out of range\n");
+        return;
+    }
+
+    struct Node *temp = current->next;
+    current->next = temp->next;
+    free(temp);
+}
+
+int search(char data[])
+{
+    struct Node *current = head;
+    int position = 0;
+    while (current != NULL)
+    {
+        if (strcmp(current->data, data) == 0)
+        {
+            return position;
+        }
+        current = current->next;
+        position++;
+    }
+    return -1; 
+}
+
+int main()
+{
+    insert_at_end("sirr");
+    insert_at_end("tuc");
+    insert_at_end("great");
+    insert_at_end("ho");
+
+    printf("Linked list: ");
+    display();
+
+    delete_at_position(2);
+
+    printf("After deleting at position 2: ");
+    display();
+
+    char search_value[] = "tu";
+    int position = search(search_value);
+
+    if (position != -1)
+    {
+        printf("%s found at position %d\n", search_value, position);
+    }
+    else
+    {
+        printf("%s not found in the list\n", search_value);
+    }
+
+    return 0;
+}
+
+
+
+OUTPUT:-
+
+Linked list: sirr -> tuc -> great -> ho -> NULL
+After deleting at position 2: sirr -> tuc -> ho -> NULL
+tu not found in the list
+
+                    </pre
+					>
+				</div><div class="list">
+					<p> SINGLE CIRCULAR LINKED LIST (STRINGS)</p>
+
+					<pre style="display: none">
+						
+//IMPLEMENTING SINGLE CIRCULAR LINKED LIST ON STRINGS	
+
+#include < stdio.h >
+#include < stdlib.h >
+#include < string.h >
+
+struct Node
+{
+    char data[50]; 
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+int is_empty()
+{
+    return head == NULL;
+}
+
+void display()
+{
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty.\n");
+        return;
+    }
+
+    struct Node *current = head;
+    do
+    {
+        printf("%s -> ", current->data);
+        current = current->next;
+    } while (current != head);
+    printf("(head)\n");
+}
+
+void insert_at_beginning(char data[])
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+
+    if (head == NULL)
+    {
+        new_node->next = new_node; 
+        head = new_node;
+    }
+    else
+    {
+        struct Node *last = head;
+        while (last->next != head)
+        {
+            last = last->next;
+        }
+        new_node->next = head;
+        last->next = new_node;
+        head = new_node;
+    }
+}
+
+void insert_at_end(char data[])
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+    new_node->next = NULL;
+
+    if (head == NULL)
+    {
+        new_node->next = new_node; 
+        head = new_node;
+    }
+    else
+    {
+        struct Node *last = head;
+        while (last->next != head)
+        {
+            last = last->next;
+        }
+        new_node->next = head;
+        last->next = new_node;
+    }
+}
+
+void insert_at_position(char data[], int position)
+{
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        insert_at_beginning(data);
+        return;
+    }
+
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty.\n");
+        free(new_node);
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current->next != head && count < position - 1)
+    {
+        current = current->next;
+        count++;
+    }
+
+    new_node->next = current->next;
+    current->next = new_node;
+}
+
+void delete_at_beginning()
+{
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    struct Node *last = head;
+    while (last->next != head)
+    {
+        last = last->next;
+    }
+
+    if (head == last)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        head = head->next;
+        last->next = head;
+        free(last->next);
+    }
+}
+
+void delete_at_end()
+{
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    struct Node *last = head;
+    struct Node *previous = NULL;
+    while (last->next != head)
+    {
+        previous = last;
+        last = last->next;
+    }
+
+    if (head == last)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        previous->next = head;
+        free(last);
+    }
+}
+
+void delete_at_position(int position)
+{
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        delete_at_beginning();
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current->next != head && count < position)
+    {
+        current = current->next;
+        count++;
+    }
+
+    if (current->next == head)
+    {
+        printf("Position out of range\n");
+        return;
+    }
+
+    struct Node *temp = current->next;
+    current->next = temp->next;
+    free(temp);
+}
+
+int search(char data[])
+{
+    if (head == NULL)
+    {
+        printf("Circular linked list is empty\n");
+        return -1; 
+    }
+
+    struct Node *current = head;
+    int position = 0;
+    do
+    {
+        if (strcmp(current->data, data) == 0)
+        {
+            return position;
+        }
+        current = current->next;
+        position++;
+    } while (current != head);
+
+    return -1; 
+}
+
+int main()
+{
+    insert_at_end("I");
+    insert_at_end("am");
+    insert_at_end("Adhiraj");
+    insert_at_end("Kanwar");
+
+    printf("Circular Linked List: ");
+    display();
+
+    delete_at_position(2);
+
+    printf("After deleting at position 2: ");
+    display();
+
+    char search_value[] = "Adhiraj";
+    int position = search(search_value);
+
+    if (position != -1)
+    {
+        printf("%s found at position %d\n", search_value, position);
+    }
+    else
+    {
+        printf("%s not found in the list\n", search_value);
+    }
+
+    return 0;
+}
+
+
+OUTPUT:-
+
+Circular Linked List: Alice -> Bob -> Charlie -> David -> (head)
+After deleting at position 2: Alice -> Bob -> Charlie -> (head)
+Bob found at position 1
+
+                    </pre
+					>
+				</div><div class="list">
+					<p>DOUBLY LINKED LIST (STRINGS)</p>
+
+					<pre style="display: none">
+
+//DOUBLY LINKED LIST ON STRINGS
+
+#include < stdio.h >
+#include < stdlib.h >
+#include < string.h >
+
+struct Node
+{
+    char data[50]; 
+    struct Node *prev;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+int is_empty()
+{
+    return head == NULL;
+}
+
+void display_forward()
+{
+    struct Node *current = head;
+    while (current != NULL)
+    {
+        printf("%s -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+void display_backward()
+{
+    struct Node *current = head;
+    if (current == NULL)
+    {
+        printf("Doubly linked list is empty.\n");
+        return;
+    }
+
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+
+    while (current != NULL)
+    {
+        printf("%s -> ", current->data);
+        current = current->prev;
+    }
+    printf("NULL\n");
+}
+
+void insert_at_beginning(char data[])
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+    new_node->prev = NULL;
+    new_node->next = head;
+
+    if (head != NULL)
+    {
+        head->prev = new_node;
+    }
+
+    head = new_node;
+}
+
+void insert_at_end(char data[])
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+    new_node->next = NULL;
+
+    if (head == NULL)
+    {
+        new_node->prev = NULL;
+        head = new_node;
+        return;
+    }
+
+    struct Node *current = head;
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+
+    new_node->prev = current;
+    current->next = new_node;
+}
+
+void insert_at_position(char data[], int position)
+{
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        insert_at_beginning(data);
+        return;
+    }
+
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+
+    if (head == NULL)
+    {
+        printf("Doubly linked list is empty.\n");
+        free(new_node);
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current->next != NULL && count < position - 1)
+    {
+        current = current->next;
+        count++;
+    }
+
+    new_node->prev = current;
+    new_node->next = current->next;
+
+    if (current->next != NULL)
+    {
+        current->next->prev = new_node;
+    }
+
+    current->next = new_node;
+}
+
+void delete_at_beginning()
+{
+    if (head == NULL)
+    {
+        printf("Doubly linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    struct Node *temp = head;
+    head = head->next;
+
+    if (head != NULL)
+    {
+        head->prev = NULL;
+    }
+
+    free(temp);
+}
+
+void delete_at_end()
+{
+    if (head == NULL)
+    {
+        printf("Doubly linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    if (head->next == NULL)
+    {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node *current = head;
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+
+    current->prev->next = NULL;
+    free(current);
+}
+
+void delete_at_position(int position)
+{
+    if (head == NULL)
+    {
+        printf("Doubly linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        delete_at_beginning();
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current != NULL && count < position)
+    {
+        current = current->next;
+        count++;
+    }
+
+    if (current == NULL)
+    {
+        printf("Position out of range\n");
+        return;
+    }
+
+    if (current->prev != NULL)
+    {
+        current->prev->next = current->next;
+    }
+    if (current->next != NULL)
+    {
+        current->next->prev = current->prev;
+    }
+
+    free(current);
+}
+
+int search(char data[])
+{
+    struct Node *current = head;
+    int position = 0;
+    while (current != NULL)
+    {
+        if (strcmp(current->data, data) == 0)
+        {
+            return position;
+        }
+        current = current->next;
+        position++;
+    }
+    return -1; 
+}
+
+int main()
+{
+    insert_at_end("this");
+    insert_at_end("is");
+    insert_at_end("some");
+    insert_at_end("code");
+
+    printf("Doubly Linked List (Forward): ");
+    display_forward();
+
+    printf("Doubly Linked List (Backward): ");
+    display_backward();
+
+    delete_at_position(2);
+
+    printf("After deleting at position 2: ");
+    display_forward();
+
+    char search_value[] = "Bob";
+    int position = search(search_value);
+
+    if (position != -1)
+    {
+        printf("%s found at position %d\n", search_value, position);
+    }
+    else
+    {
+        printf("%s not found in the list\n", search_value);
+    }
+
+    return 0;
+}
+
+
+
+OUTPUT:-
+
+Doubly Linked List (Forward): this -> is -> some -> code -> NULL
+Doubly Linked List (Backward): code -> some -> is -> this -> NULL
+After deleting at position 2: this -> is -> code -> NULL
+Bob not found in the list
+                    </pre
+					>
+				</div><div class="list">
+					<p>DOUBLY CIRCULAR LINKED LIST (STRINGS)</p>
+
+					<pre style="display: none">
+                     
+//IMPLEMENTING DOUBLY CIRCULAR LINKED LIST ON STRINGS 					
+						
+#include < stdio.h >
+#include < stdlib.h >
+#include < string.h >
+
+struct Node
+{
+    char data[50]; 
+    struct Node *prev;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+int is_empty()
+{
+    return head == NULL;
+}
+
+void display()
+{
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty.\n");
+        return;
+    }
+
+    struct Node *current = head;
+    do
+    {
+        printf("%s -> ", current->data);
+        current = current->next;
+    } while (current != head);
+    printf("(head)\n");
+}
+
+void insert_at_beginning(char data[])
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+
+    if (head == NULL)
+    {
+        new_node->prev = new_node;
+        new_node->next = new_node;
+        head = new_node;
+    }
+    else
+    {
+        struct Node *last = head->prev;
+        new_node->prev = last;
+        new_node->next = head;
+        head->prev = new_node;
+        last->next = new_node;
+        head = new_node;
+    }
+}
+
+void insert_at_end(char data[])
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+
+    if (head == NULL)
+    {
+        new_node->prev = new_node;
+        new_node->next = new_node;
+        head = new_node;
+    }
+    else
+    {
+        struct Node *last = head->prev;
+        new_node->prev = last;
+        new_node->next = head;
+        head->prev = new_node;
+        last->next = new_node;
+    }
+}
+
+void insert_at_position(char data[], int position)
+{
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        insert_at_beginning(data);
+        return;
+    }
+
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    strcpy(new_node->data, data);
+
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty.\n");
+        free(new_node);
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current->next != head && count < position - 1)
+    {
+        current = current->next;
+        count++;
+    }
+
+    new_node->prev = current;
+    new_node->next = current->next;
+    current->next->prev = new_node;
+    current->next = new_node;
+}
+
+void delete_at_beginning()
+{
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    struct Node *last = head->prev;
+    if (head == last)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        head = head->next;
+        last->next = head;
+        head->prev = last;
+        free(last->next);
+    }
+}
+
+void delete_at_end()
+{
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    struct Node *last = head->prev;
+    if (head == last)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        last->prev->next = head;
+        head->prev = last->prev;
+        free(last);
+    }
+}
+
+void delete_at_position(int position)
+{
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty, nothing to delete\n");
+        return;
+    }
+
+    if (position < 0)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    if (position == 0)
+    {
+        delete_at_beginning();
+        return;
+    }
+
+    struct Node *current = head;
+    int count = 0;
+    while (current->next != head && count < position)
+    {
+        current = current->next;
+        count++;
+    }
+
+    if (current->next == head)
+    {
+        printf("Position out of range\n");
+        return;
+    }
+
+    current->prev->next = current->next;
+    current->next->prev = current->prev;
+    free(current);
+}
+
+int search(char data[])
+{
+    if (head == NULL)
+    {
+        printf("Doubly circular linked list is empty\n");
+        return -1; 
+    }
+
+    struct Node *current = head;
+    int position = 0;
+    do
+    {
+        if (strcmp(current->data, data) == 0)
+        {
+            return position;
+        }
+        current = current->next;
+        position++;
+    } while (current != head);
+
+    return -1;
+}
+
+int main()
+{
+    // Example usage of the doubly circular linked list
+    insert_at_end("this");
+    insert_at_end("is");
+    insert_at_end("a");
+    insert_at_end("ll");
+
+    printf("Doubly Circular Linked List: ");
+    display();
+
+    delete_at_position(2);
+
+    printf("After deleting at position 2: ");
+    display();
+
+    char search_value[] = "is";
+    int position = search(search_value);
+
+    if (position != -1)
+    {
+        printf("%s found at position %d\n", search_value, position+1);
+    }
+    else
+    {
+        printf("%s not found in the list\n", search_value);
+    }
+
+    return 0;
+}
+
+
+
+OUTPUT:-
+
+Doubly Circular Linked List: this -> is -> a -> ll -> (head)
+After deleting at position 2: this -> is -> ll -> (head)
+is found at position 2
+
+                    </pre
+					>
+					
+				</div>
+			</div>
+		</div>
+
+		<div class="codeContainer">
+			<h1>The code will be shown here</h1>
+			<h3>Click any of the list to see the code!</h3>
+		</div>
+		</div>
+
+		<script>
+			const container = document.querySelector(".codeContainer");
+			const [...lists] = document.querySelectorAll(".list");
+
+			lists.forEach((list) => {
+				list.addEventListener("click", () => {
+					const heading = list.querySelector("p").innerHTML;
+					const code = list.querySelector("pre").innerText;
+					render(heading, code);
+				});
+			});
+
+			function render(heading, code) {
+				container.innerHTML = `
+                	
+			<p>
+				${code}
+			</p>
+                `;
+			}
+		</script>
+	</body>
+</html>

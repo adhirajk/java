@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Searching Algorithms</title>
+		<link rel="stylesheet" href="main.css" />
+	</head>
+	<body>
+		<div class="container">
+			<img src="bg.jpg" alt="">
+			<div class="lists">
+				<h1>List of programs</h1>
+
+				<div class="list">
+					<p>LINEAR SEARCH (INTEGERS)</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+
+int linearSearch(int arr[], int size, int key)
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (arr[i] == key)
+        {
+            return i; 
+        }
+    }
+    return -1; 
+}
+
+int main()
+{
+    int size, key;
+
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+
+    if (size <= 0)
+    {
+        printf("Invalid array size.\n");
+        return 1;
+    }
+
+    int arr[size];
+
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < size; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter the integer value to search for: ");
+    scanf("%d", &key);
+
+    int result = linearSearch(arr, size, key);
+
+    if (result != -1)
+    {
+        printf("Element %d found at index %d.\n", key, result);
+    }
+    else
+    {
+        printf("Element %d not found in the array.\n", key);
+    }
+
+    return 0;
+}
+
+OUTPUT;
+
+Enter the size of the array: 5
+Enter the elements of the array:
+10
+20
+32
+64
+73
+Enter the integer value to search for: 32
+Element 32 found at index 2.
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>LINEAR SEARCH THROUGH RECURSION</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+
+int linearSearch(char str[], char key, int index)
+{
+    if (str[index] == '\0')
+    {
+        return -1; 
+    }
+
+    if (str[index] == key)
+    {
+        return index; 
+    }
+
+    return linearSearch(str, key, index + 1);
+}
+
+int main()
+{
+    char str[100];
+    char key;
+
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    printf("Enter the character to search for: ");
+    scanf(" %c", &key); 
+
+    int result = linearSearch(str, key, 0);
+
+    if (result != -1)
+    {
+        printf("Character '%c' found at index %d.\n", key, result);
+    }
+    else
+    {
+        printf("Character '%c' not found in the string.\n", key);
+    }
+
+    return 0;
+}
+
+
+
+OUTPUT:
+
+Enter the size of the array: 5
+Enter the elements of the sorted array:
+ABCDE
+Enter the integer value to search for: H
+Element H not found in the array.
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>LINEAR SEARCH ON INTEGER VALUES</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+
+int linearSearch(int arr[], int size, int key, int index)
+{
+    if (index == size)
+    {
+        return -1; 
+    }
+
+    if (arr[index] == key)
+    {
+        return index; 
+    }
+
+    return linearSearch(arr, size, key, index + 1);
+}
+
+int main()
+{
+    int size, key;
+
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+
+    if (size <= 0)
+    {
+        printf("Invalid array size.\n");
+        return 1;
+    }
+
+    int arr[size];
+
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < size; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter the integer value to search for: ");
+    scanf("%d", &key);
+
+    int result = linearSearch(arr, size, key, 0);
+
+    if (result != -1)
+    {
+        printf("Element %d found at index %d.\n", key, result);
+    }
+    else
+    {
+        printf("Element %d not found in the array.\n", key);
+    }
+
+    return 0;
+}
+
+OUTPUT:
+
+Enter the size of the array: 5
+Enter the elements of the array:
+12
+53
+67
+78
+80
+Enter the integer value to search for: 53
+Element 53 found at index 1.
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>LINEAR SEARCH (CHARS)</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+
+int linearSearch(char str[], char key)
+{
+    int index = 0;
+
+    while (str[index] != '\0')
+    {
+        if (str[index] == key)
+        {
+            return index;
+        }
+        index++;
+    }
+
+    return -1;
+}
+
+int main()
+{
+    char str[100];
+    char key;
+
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    printf("Enter the character to search for: ");
+    scanf(" %c", &key);
+
+    int result = linearSearch(str, key);
+
+    if (result != -1)
+    {
+        printf("Character '%c' found at index %d.\n", key, result);
+    }
+    else
+    {
+        printf("Character '%c' not found in the string.\n", key);
+    }
+
+    return 0;
+}
+
+OUTPUT:
+
+Enter a string: ADFHJK
+Enter the character to search for: H
+Character 'I' found at index 3
+
+                    </pre
+					>
+				</div><div class="list">
+					<p>BINARY SEARCH (CHARS) THROUGH RECURSION</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+
+int binarySearch(int arr[], int size, int key)
+{
+    int left = 0;
+    int right = size - 1;
+
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == key)
+        {
+            return mid; 
+        }
+
+        if (arr[mid] < key)
+        {
+            left = mid + 1;
+        }
+        else
+        {
+            right = mid - 1;
+        }
+    }
+
+    return -1; 
+}
+
+int main()
+{
+    int size, key;
+
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+
+    if (size <= 0)
+    {
+        printf("Invalid array size.\n");
+        return 1;
+    }
+
+    int arr[size];
+
+    printf("Enter the elements of the sorted array:\n");
+    for (int i = 0; i < size; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter the integer value to search for: ");
+    scanf("%d", &key);
+
+    int result = binarySearch(arr, size, key);
+
+    if (result != -1)
+    {
+        printf("Element %d found at index %d.\n", key, result);
+    }
+    else
+    {
+        printf("Element %d not found in the array.\n", key);
+    }
+
+    return 0;
+}
+
+OUTPUT:
+
+Enter a string: ADFHJK
+Enter the character to search for: H
+Character 'I' found at index 3
+
+                    </pre
+					>
+				</div><div class="list">
+					<p>BINARY SEARCH (INTEGERS) THROUGH RECURSION</p>
+
+					<pre style="display: none">
+
+
+
+
+#include < stdio.h >
+
+int binarySearch(int arr[], int left, int right, int key)
+{
+    if (left > right)
+    {
+        return -1; // Element not found
+    }
+
+    int mid = left + (right - left) / 2;
+
+    if (arr[mid] == key)
+    {
+        return mid; // Element found, return the index
+    }
+
+    if (arr[mid] < key)
+    {
+        return binarySearch(arr, mid + 1, right, key);
+    }
+
+    return binarySearch(arr, left, mid - 1, key);
+}
+
+int main()
+{
+    int size, key;
+
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+
+    if (size <= 0)
+    {
+        printf("Invalid array size.\n");
+        return 1;
+    }
+
+    int arr[size];
+
+    printf("Enter the elements of the sorted array:\n");
+    for (int i = 0; i < size; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter the integer value to search for: ");
+    scanf("%d", &key);
+
+    int result = binarySearch(arr, 0, size - 1, key);
+
+    if (result != -1)
+    {
+        printf("Element %d found at index %d.\n", key, result);
+    }
+    else
+    {
+        printf("Element %d not found in the array.\n", key);
+    }
+
+    return 0;
+}
+
+
+OUTPUT:
+
+Enter the size of the array: 5
+Enter the elements of the sorted array:
+10
+20
+30
+40
+50
+Enter the integer value to search for: 33 
+Element 33 not found in the array.
+
+                    </pre
+					>
+				</div><div class="list">
+					<p>BINARY SEARCH (CHARS) THROUGH ITERATION</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+#include < string.h >
+
+int binarySearch(char arr[][100], int size, char key[100])
+{
+    int left = 0;
+    int right = size - 1;
+
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        int compareResult = strcmp(arr[mid], key);
+
+        if (compareResult == 0)
+        {
+            return mid; // String found, return the index
+        }
+
+        if (compareResult < 0)
+        {
+            left = mid + 1;
+        }
+        else
+        {
+            right = mid - 1;
+        }
+    }
+
+    return -1; // String not found
+}
+
+int main()
+{
+    int size;
+    char key[100];
+
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+
+    if (size <= 0)
+    {
+        printf("Invalid array size.\n");
+        return 1;
+    }
+
+    char arr[size][100];
+
+    printf("Enter the elements of the sorted array:\n");
+    for (int i = 0; i < size; i++)
+    {
+        scanf("%s", arr[i]);
+    }
+
+    printf("Enter the string value to search for: ");
+    scanf("%s", key);
+
+    int result = binarySearch(arr, size, key);
+
+    if (result != -1)
+    {
+        printf("String '%s' found at index %d.\n", key, result);
+    }
+    else
+    {
+        printf("String '%s' not found in the array.\n", key);
+    }
+
+    return 0;
+}
+
+
+
+OUTPUT:
+
+Enter a string: AFIJT
+Enter the character to search for: A
+Character 'A' found at index 0.
+                    </pre
+					>
+				</div>
+			</div>
+		</div>
+
+		<div class="codeContainer">
+			<h1>The code will be shown here</h1>
+			<h3>Click any of the list to see the code!</h3>
+		</div>
+		</div>
+
+		<script>
+			const container = document.querySelector(".codeContainer");
+			const [...lists] = document.querySelectorAll(".list");
+
+			lists.forEach((list) => {
+				list.addEventListener("click", () => {
+					const heading = list.querySelector("p").innerHTML;
+					const code = list.querySelector("pre").innerText;
+					render(heading, code);
+				});
+			});
+
+			function render(heading, code) {
+				container.innerHTML = `
+			<p>
+				${code}
+			</p>
+                `;
+			}
+		</script>
+	</body>
+</html>

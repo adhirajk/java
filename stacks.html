@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Stacks</title>
+		<link rel="stylesheet" href="main.css" />
+	</head>
+	<body>
+		<div class="container">
+			<img src="bg.jpg" alt="">
+			<div class="lists">
+				<h1>List of programs</h1>
+
+				<div class="list">
+					<p>	IMPLEMENTING STACK ON INTEGER ARRAY</p>
+					<pre style="display: none">
+						
+			
+						
+// CREATE A STACK IMPLEMENTING THE OPERATIONS ON AN INTEGER ARRAY
+#include < stdio.h >
+#include < conio.h >
+
+int arr[5], length = 5, i = -1;
+
+int push(int value)
+{
+    i++;
+    arr[i] = value;
+    return value;
+}
+
+int pop()
+{   
+    int poppedValue = arr[i];
+    i--;
+    return poppedValue;
+}
+
+int peek()
+{
+    return arr[i];
+}
+
+int isFull()
+{
+    if (i == length - 1)
+    {
+        printf("Stack is full\n\n");
+        return i;
+    }
+    return i;
+}
+
+int isEmpty()
+{
+    if (i == -1)
+    {
+        printf("Stack is empty\n\n");
+        return i;
+    }
+    return i;
+}
+
+int printStack()
+{
+    for (int j = 0; j <= i; j++)
+    {
+        printf("%d ", arr[j]);
+        // printf("\n");
+    }
+}
+int main()
+{
+    int value;
+    char choice;
+
+    do
+    {
+
+        printf("1.Push\n2.Pop\n3.Peek\n4.Exit\n");
+        choice = getche();
+        printf("\n");
+
+        switch (choice)
+        {
+        case '1':
+            if (i == length - 1)
+            {
+                isFull();
+                // printStack();
+            }
+            else
+            {
+                printf("Enter the value to be pushed : ");
+                scanf("%d", &value);
+                push(value);
+                printf("%d is pushed\n\n", value);
+                printf("Stack : ");
+                printStack();
+                printf("\n\n");
+            }
+
+            break;
+
+        case '2':
+            if (i == -1)
+            {
+                isEmpty();
+                // printStack();
+            }
+            else
+            {
+                printf("%d is popped\n\n", arr[i]);
+                pop();
+                printf("Stack : ");
+                printStack();
+                printf("\n\n");
+            }
+            break;
+
+        case '3':
+            if (i == -1)
+            {
+                isEmpty();
+            }
+            else
+            {
+                int topValue=peek();
+                printf("Value at top is: %d\n",topValue);
+            }
+            break;
+
+        case '4':
+            printf("You have exited the program");
+            break;
+
+        default:
+            printf("Enter a valid input\n\n");
+            break;
+        }
+    } while (choice != '4');
+
+    return 0;
+}
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>IMPLEMENTING STACK ON CHAR ARRAY</p>
+
+					<pre style="display: none">
+
+
+
+// CREATE A STACK IMPLEMENTING THE OPERATIONS ON THE CHARACTERS ARRAY
+#include < stdio.h >
+#include < conio.h >
+int i = -1;
+
+char push(char arr[], char value){
+    i++;
+    arr[i] = value;
+    return value;
+}
+
+char pop(char arr[]){
+    int poppedValue=arr[i];
+    i--;
+    return poppedValue;
+}
+
+char peek(char arr[]){
+    return arr[i];
+}
+
+int isFull(int length){
+    return i == length-1;
+}
+
+int isEmpty(int length){
+    return i==-1;
+}
+char printStack(char arr[])
+{
+    for (int j = 0; j <= i; j++)
+    {
+        printf("%c ", arr[j]);
+        // printf("\n");
+    }
+}
+int main(){
+    char arr[5], length = 5,choice,value;
+
+    do
+    {
+
+        printf("1.Push\n2.Pop\n3.Peek\n4.Exit\n");
+        choice = getche();
+        printf("\n");
+
+        switch (choice)
+        {
+        case '1':
+            if (isFull(length))
+            {
+                printf("Stack is full!!!\n\n");
+            }
+            else
+            {
+                printf("Enter the value to be pushed : ");
+                value = getche();
+                char pushedValue = push(arr,value);
+                printf("\n%c is pushed\n\n", pushedValue);
+                printf("Stack : ");
+                printStack(arr);
+                printf("\n\n");
+            }
+
+            break;
+
+        case '2':
+            if (isEmpty(length))
+            {
+                printf("Stack is empty!!!\n\n");
+            }
+            else
+            {
+                char poppedValue = pop(arr);
+                printf("%c is popped\n\n", poppedValue);
+                printf("Stack : ");
+                printStack(arr);
+                printf("\n\n");
+            }
+            break;
+
+        case '3':
+            if (isEmpty(length))
+            {
+                printf("Stack is empty!!!\n\n");
+            }
+            else
+            {
+                char topValue = peek(arr);
+                printf("Value at top is : %c\n\n",topValue);
+            }
+            break;
+
+        case '4':
+            printf("You have exited the program");
+            break;
+
+        default:
+            printf("Enter a valid input\n\n");
+            break;
+        }
+    } while (choice != '4');
+
+    return 0;
+}
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>IMPLEMENTING STACK DYNAMICALLY (INTEGERS)</p>
+
+					<pre style="display: none">
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+struct Stack
+{
+    struct Node *top;
+};
+
+struct Stack *createStack()
+{
+    struct Stack *stack = (struct Stack *)malloc(sizeof(struct Stack));
+    stack->top = NULL;
+    return stack;
+}
+
+int isEmpty(struct Stack *stack)
+{
+    return stack->top == NULL;
+}
+
+void push(struct Stack *stack, int data)
+{
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = stack->top;
+    stack->top = newNode;
+    printf("%d pushed onto the stack.\n", data);
+}
+
+int pop(struct Stack *stack)
+{
+    if (isEmpty(stack))
+    {
+        printf("Stack is empty. Cannot pop.\n");
+        return -1;
+    }
+
+    struct Node *temp = stack->top;
+    int data = temp->data;
+    stack->top = temp->next;
+    free(temp);
+    return data;
+}
+
+int peek(struct Stack *stack)
+{
+    if (isEmpty(stack))
+    {
+        printf("Stack is empty. Cannot peek.\n");
+        return -1;
+    }
+    return stack->top->data;
+}
+
+int isFull(struct Stack *stack)
+{
+    return 0; 
+}
+
+int main()
+{
+    struct Stack *stack = createStack();
+
+    push(stack, 10);
+    push(stack, 20);
+    push(stack, 30);
+
+    printf("Top element: %d\n", peek(stack));
+
+    printf("Popped element: %d\n", pop(stack));
+    printf("Popped element: %d\n", pop(stack));
+
+    printf("Is the stack empty? %s\n", isEmpty(stack) ? "Yes" : "No");
+    printf("Is the stack full? %s\n", isFull(stack) ? "Yes" : "No");
+
+    return 0;
+}
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>IMPLEMENTING STACK DYNAMICALLY (CHARS)</p>
+
+					<pre style="display: none">
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct Node
+{
+    char data;
+    struct Node *next;
+};
+
+struct Stack
+{
+    struct Node *top;
+};
+
+struct Stack *createStack()
+{
+    struct Stack *stack = (struct Stack *)malloc(sizeof(struct Stack));
+    stack->top = NULL;
+    return stack;
+}
+
+int isEmpty(struct Stack *stack)
+{
+    return stack->top == NULL;
+}
+
+int isFull(struct Stack *stack)
+{
+    return 0;
+}
+
+void push(struct Stack *stack, char data)
+{
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = stack->top;
+    stack->top = newNode;
+    printf("%c pushed onto the stack.\n", data);
+}
+
+char pop(struct Stack *stack)
+{
+    if (isEmpty(stack))
+    {
+        printf("Stack is empty. Cannot pop.\n");
+        return '\0';
+    }
+
+    struct Node *temp = stack->top;
+    char data = temp->data;
+    stack->top = temp->next;
+    free(temp);
+    return data;
+}
+
+char peek(struct Stack *stack)
+{
+    if (isEmpty(stack))
+    {
+        printf("Stack is empty. Cannot peek.\n");
+        return '\0';
+    }
+    return stack->top->data;
+}
+
+int main()
+{
+    struct Stack *stack = createStack();
+
+    push(stack, 'A');
+    push(stack, 'B');
+    push(stack, 'C');
+
+    printf("Top element: %c\n", peek(stack));
+
+    printf("Popped element: %c\n", pop(stack));
+    printf("Popped element: %c\n", pop(stack));
+
+    printf("Is the stack empty? %s\n", isEmpty(stack) ? "Yes" : "No");
+    printf("Is the stack full? %s\n", isFull(stack) ? "Yes" : "No");
+
+    return 0;
+}
+
+                    </pre
+					>
+				</div><div class="list">
+					<p>REVERSE THE STRING</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+#include < stdlib.h > 
+#include < string.h >
+
+struct StackNode
+{
+    char data;
+    struct StackNode *next;
+};
+
+struct Stack
+{
+    struct StackNode *top;
+};
+
+struct Stack *createStack()
+{
+    struct Stack *stack = (struct Stack *)malloc(sizeof(struct Stack));
+    stack->top = NULL;
+    return stack;
+}
+
+int isEmpty(struct Stack *stack)
+{
+    return stack->top == NULL;
+}
+
+void push(struct Stack *stack, char data)
+{
+    struct StackNode *newNode = (struct StackNode *)malloc(sizeof(struct StackNode));
+    newNode->data = data;
+    newNode->next = stack->top;
+    stack->top = newNode;
+}
+
+char pop(struct Stack *stack)
+{
+    if (isEmpty(stack))
+    {
+        printf("Stack is empty. Cannot pop.\n");
+        return '\0';
+    }
+    struct StackNode *temp = stack->top;
+    char data = temp->data;
+    stack->top = temp->next;
+    free(temp);
+    return data;
+}
+
+int main()
+{
+    struct Stack *stack = createStack();
+
+    printf("Enter a string: ");
+    char inputString[100];
+    fgets(inputString, sizeof(inputString), stdin);
+
+    for (int i = 0; i < strlen(inputString); i++)
+    {
+        if (inputString[i] != '\n')
+        {
+            push(stack, inputString[i]);
+        }
+    }
+
+    printf("Reversed string: ");
+    while (!isEmpty(stack))
+    {
+        printf("%c", pop(stack));
+    }
+
+    printf("\n");
+
+    return 0;
+}
+
+                    </pre
+					>
+				</div><div class="list">
+					<p>BRACKET MATCHING</p>
+
+					<pre style="display: none">
+
+
+#include < stdio.h >
+#include < stdlib.h >
+#include < stdbool.h >
+
+struct StackNode
+{
+    char data;
+    struct StackNode *next;
+};
+
+struct Stack
+{
+    struct StackNode *top;
+};
+
+struct Stack *createStack()
+{
+    struct Stack *stack = (struct Stack *)malloc(sizeof(struct Stack));
+    stack->top = NULL;
+    return stack;
+}
+
+bool isEmpty(struct Stack *stack)
+{
+    return stack->top == NULL;
+}
+
+void push(struct Stack *stack, char data)
+{
+    struct StackNode *newNode = (struct StackNode *)malloc(sizeof(struct StackNode));
+    newNode->data = data;
+    newNode->next = stack->top;
+    stack->top = newNode;
+}
+
+char pop(struct Stack *stack)
+{
+    if (isEmpty(stack))
+    {
+        return '\0';
+    }
+    struct StackNode *temp = stack->top;
+    char data = temp->data;
+    stack->top = temp->next;
+    free(temp);
+    return data;
+}
+
+bool areBracketsBalanced(char *expression)
+{
+    struct Stack *stack = createStack();
+
+    for (int i = 0; expression[i] != '\0'; i++)
+    {
+        if (expression[i] == '(' || expression[i] == '[' || expression[i] == '{')
+        {
+            push(stack, expression[i]);
+        }
+        else if (expression[i] == ')' || expression[i] == ']' || expression[i] == '}')
+        {
+            if (isEmpty(stack))
+            {
+                return false;
+            }
+
+            char top = pop(stack);
+
+            if ((expression[i] == ')' && top != '(') ||
+                (expression[i] == ']' && top != '[') ||
+                (expression[i] == '}' && top != '{'))
+            {
+                return false;
+            }
+        }
+    }
+
+    return isEmpty(stack);
+}
+
+int main()
+{
+    char expression[100];
+
+    printf("Enter an expression with brackets: ");
+    scanf("%s", expression);
+
+    if (areBracketsBalanced(expression))
+    {
+        printf("Brackets are balanced.\n");
+    }
+    else
+    {
+        printf("Brackets are not balanced.\n");
+    }
+
+    return 0;
+}
+
+                    </pre
+					>
+				</div>
+                <div class="list">
+                    <p>MERGE SORT THROUGH ITERATION</p>
+                    <pre style="display: none;">
+
+
+
+#include < stdio.h >
+#include < string.h >
+#include < stdlib.h >
+
+void merge(char *arr[], int l, int m, int r) {
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    char *L[n1];
+    char *R[n2];
+
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2) {
+        if (strcmp(L[i], R[j]) <= 0) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(char *arr[], int n) {
+    int current_size;
+    int left_start;
+
+    for (current_size = 1; current_size <= n - 1; current_size = 2 * current_size) {
+        for (left_start = 0; left_start < n - 1; left_start += 2 * current_size) {
+            int mid = left_start + current_size - 1;
+
+            int right_end = (left_start + 2 * current_size - 1 < n - 1) ? left_start + 2 * current_size - 1 : n - 1;
+
+            merge(arr, left_start, mid, right_end);
+        }
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the number of strings: ");
+    scanf("%d", &n);
+
+    char *strArray[n];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter string %d: ", i + 1);
+        char buffer[100];
+        scanf("%s", buffer);
+        strArray[i] = strdup(buffer);
+    }
+
+    mergeSort(strArray, n);
+
+    printf("Sorted strings:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%s\n", strArray[i]);
+        free(strArray[i]);
+    }
+
+    return 0;
+}
+
+                    </pre>
+                </div>
+			</div>
+		</div>
+
+		<div class="codeContainer">
+			<h1>The code will be shown here</h1>
+			<h3>Click any of the list to see the code!</h3>
+		</div>
+		</div>
+
+		<script>
+			const container = document.querySelector(".codeContainer");
+			const [...lists] = document.querySelectorAll(".list");
+
+			lists.forEach((list) => {
+				list.addEventListener("click", () => {
+					const heading = list.querySelector("p").innerHTML;
+					const code = list.querySelector("pre").innerText;
+					render(heading, code);
+				});
+			});
+
+			function render(heading, code) {
+				container.innerHTML = `
+			<p>
+				${code}
+			</p>
+                `;
+			}
+		</script>
+	</body>
+</html>
