@@ -41,6 +41,7 @@
   max-height: calc(100vh - 90px);
 }
 .sidebar button {
+  margin-bottom: 5px;
   /* border: 1px solid gray; */
   width: 100%;
   padding: 8px;
